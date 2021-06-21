@@ -111,7 +111,7 @@ resource "aws_rds_cluster" "main" {
   kms_key_id = var.kms_key_id
 
   database_name   = var.database_name
-  master_username = var.username
+  master_username = var.username == "" ? null : var.password // a secondary aurora cluster will fail with this set
   master_password = var.password == "" ? random_password.master_password.result : var.password
 
   final_snapshot_identifier = "${var.final_snapshot_identifier_prefix}-${var.name_prefix}-${random_id.snapshot_identifier.hex}"
